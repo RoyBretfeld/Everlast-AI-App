@@ -23,6 +23,7 @@ declare global {
     electronAPI: {
       onHotkey: (callback: () => void) => void;
       minimizeApp: () => void;
+      send: (channel: string) => void;
     }
   }
 }
@@ -285,6 +286,12 @@ export default function Home() {
     }
   };
 
+  const closeApp = () => {
+    if (window.confirm('EVERLAST AI beenden?')) {
+      window.close(); // Schließt das Fenster in Electron oder Browser
+    }
+  };
+
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
     return date.toLocaleString('de-DE', {
@@ -484,6 +491,17 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Exit Button - System Shutdown */}
+      <div className="exit-container">
+        <button
+          className="exit-button"
+          onClick={closeApp}
+          title="App beenden"
+        >
+          SYSTEM_SHUTDOWN
+        </button>
+      </div>
     </main>
   );
 }

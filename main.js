@@ -42,6 +42,7 @@ const createWindow = () => {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+    app.quit(); // Beendet den gesamten Prozess, wenn das Fenster geschlossen wird
   });
 };
 

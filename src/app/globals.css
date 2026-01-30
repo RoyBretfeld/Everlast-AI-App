@@ -736,8 +736,45 @@ input,
 .orb-container,
 .result-area,
 .result-content,
-.result-header {
+.result-header,
+.exit-container {
   -webkit-app-region: no-drag;
+}
+
+/* EXIT BUTTON - System Shutdown */
+.exit-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.exit-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.4);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  -webkit-app-region: no-drag;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.exit-button:hover {
+  background: rgba(255, 68, 68, 0.2);
+  color: #ff4444;
+  border-color: #ff4444;
+  box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+}
+
+.exit-button:active {
+  background: rgba(255, 68, 68, 0.3);
+  transform: scale(0.98);
 }
 
 /* RESPONSIVE */
