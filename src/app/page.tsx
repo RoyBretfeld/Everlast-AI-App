@@ -49,7 +49,6 @@ export default function Home() {
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const audioChunks = useRef<Blob[]>([]);
   const analyser = useRef<AnalyserNode | null>(null);
-  const silenceStart = useRef<number>(0);
   const audioContext = useRef<AudioContext | null>(null);
   const isStopping = useRef<boolean>(false);
   const isRecordingRef = useRef<boolean>(false);
@@ -169,7 +168,6 @@ export default function Home() {
             audioContext.current.close();
             audioContext.current = null;
           }
-          silenceStart.current = 0;
           setIsRecording(false);
           setStatus('Wird verarbeitet...');
         }
@@ -207,8 +205,9 @@ export default function Home() {
       source.connect(analyserNode);
       analyser.current = analyserNode;
 
-      // Silence detection disabled - user controls recording manually
-      // TODO: Implement better amplitude-based silence detection in future
+      // Silence detection disabled - FFT threshold is unreliable for speech detection
+      // User controls recording manually via Ctrl+Alt+E hotkey (much more reliable)
+      // TODO: Implement RMS-based amplitude detection for better accuracy
       // const dataArray = new Uint8Array(analyserNode.frequencyBinCount);
 
       mediaRecorder.current.ondataavailable = (event) => {
@@ -220,7 +219,6 @@ export default function Home() {
         await processAudio(audioBlob);
       };
 
-      silenceStart.current = 0;
       isStopping.current = false;
       mediaRecorder.current.start();
       setIsRecording(true);
@@ -244,7 +242,6 @@ export default function Home() {
         audioContext.current = null;
       }
 
-      silenceStart.current = 0;
       setIsRecording(false);
       setStatus('Wird verarbeitet...');
     }
