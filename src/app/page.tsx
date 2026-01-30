@@ -470,7 +470,7 @@ export default function Home() {
             </div>
             <div className="modal-body">
               <div className="warning-banner">
-                <strong>⚠ DEMO-API-SCHLÜSSEL:</strong> Der integrierte API-Schlüssel ist nur für Demonstrationszwecke und wird nach 14 Tagen gelöscht. Verwenden Sie für die Produktivversion Ihren eigenen Schlüssel.
+                <strong>ℹ SYSTEM PROMPT:</strong> Passen Sie die KI-Anweisungen an. Die Änderungen werden lokal gespeichert und beeinflussen die Transkriptions-Verarbeitung.
               </div>
               <label>BEFEHLSSATZ:</label>
               <textarea
