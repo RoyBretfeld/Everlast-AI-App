@@ -41,3 +41,9 @@ release/
 .rb_dumps
 _trash
 data/history.json
+
+# Internal scripts & workflows
+scripts/sync_to_drive.ps1
+scripts/clean_electron.ps1
+scripts/fix_electron_env.ps1
+.agent/workflows/sync.md
