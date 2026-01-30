@@ -1,0 +1,177 @@
+:root {
+  --background: #050505;
+  --foreground: #ffffff;
+  --accent: #0070f3;
+  --accent-glow: rgba(0, 112, 243, 0.4);
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: transparent;
+  /* Electron transparency */
+  color: var(--foreground);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  min-height: 250px;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  -webkit-app-region: drag;
+  /* Draggable app */
+}
+
+.content {
+  -webkit-app-region: no-drag;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to bottom right, #fff 0%, #aaa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.recording-indicator {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 0 0 var(--accent-glow);
+}
+
+.recording-indicator.active {
+  animation: pulse 2s infinite;
+  background: #ff4d4d;
+  --accent-glow: rgba(255, 77, 77, 0.4);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--accent-glow);
+  }
+
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.status-text {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+.result-area {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.result-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+}
+
+.copy-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.result-content {
+  max-height: 120px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+/* Custom Scrollbar */
+.result-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.result-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.browser-hint {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  margin-top: 8px;
+}

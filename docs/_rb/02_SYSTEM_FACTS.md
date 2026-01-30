@@ -1,61 +1,58 @@
 # System Facts – EVERLAST AI
 
-> 🚧 **Status:** Discovery Phase  
-> 📅 **Erstellt:** 2026-01-22  
-> 🎯 **Konzept:** Black Box Event für Programmierer
+> 🚧 **Status:** Planning Phase  
+> 📅 **Aktualisiert:** 2026-01-30  
+> 🎯 **Konzept:** Voice Intelligence Desktop App (Everlast)
 
 ---
 
 ## Vision
 
-**Mystery Coding Event** – Ein rätselhaftes, immersives Erlebnis für Programmierer.
+**Everlast** – Eine intelligente Desktop-Anwendung, die Spracheingaben nahtlos in strukturierten Nutzwert verwandelt.
 
 **Kernidee:**
-- Teilnehmer lösen mysteriöse Coding-Rätsel
-- Narrative Story-Elemente verwoben mit Code-Challenges
-- "Black Box" = Unbekanntes entdecken, Geheimnisse lüften
-
-**Mögliche Mechaniken:**
-- [ ] Versteckte Hinweise im Code entschlüsseln
-- [ ] AI als mysteriöser "Game Master" / Erzähler
-- [ ] Progressive Rätsel-Ketten (ARG-Style)
-- [ ] Escape-Room-Logik im Terminal
-- [ ] Easter Eggs & geheime Endpunkte
+- Aufnahme → Transkription → Enrichment (KI-Veredelung) in einem flüssigen Workflow.
+- Aktivierung über globalen Hotkey für maximale Effizienz.
+- Output: Zusammenfassungen, strukturierte Notizen oder formatierter Text.
 
 ---
 
-## Tech Stack (TBD)
+## Tech Stack
 
 | Kategorie | Entscheidung |
 |-----------|--------------|
-| **Sprache** | _noch offen_ (Python? Node? Multi?) |
-| **Plattform** | _noch offen_ (Web? CLI? Desktop?) |
-| **Backend** | _noch offen_ |
-| **Frontend** | _noch offen_ |
-| **AI Integration** | _möglich_ |
+| **Framework** | Next.js (React) |
+| **Desktop Runtime** | Electron |
+| **Sprache** | TypeScript + JavaScript |
+| **Styling** | Vanilla CSS (Modern, Premium Aesthetics) |
+| **Transcription** | Groq Whisper (v3) / OpenAI Whisper |
+| **LLM Integration** | Groq (Llama 3) / OpenAI (GPT-4) |
+| **Hotkey** | Electron globalShortcut |
 
 ---
 
-## Project Structure (Initial)
+## Project Structure (Target)
 
 ```
 ___EVERLAST_AI_TASK/
-├── docs/
-│   └── _rb/
-│       └── 02_SYSTEM_FACTS.md   # Diese Datei
-├── src/                          # Quellcode (später)
-├── assets/                       # Grafiken, Sounds (später)
+├── src/                          # Next.js Frontend
+│   ├── components/               # UI Components
+│   ├── lib/                      # Logic (Recording, API)
+│   └── styles/                   # Vanilla CSS Modules
+├── main.js                       # Electron Main Process
+├── docs/                         # Projekt-Dokumentation
+│   └── _rb/                      # RB-Protocol Docs
 ├── .gitignore
-└── README.md                     # Projektbeschreibung (TODO)
+└── README.md                     # Architektur & Setup (Final)
 ```
 
 ---
 
 ## Important Paths
 
-- **Error DB (Central):** `E:\_____1111____Projekte-Programmierung\Antigravity\03_ERROR_DB.md`
+- **Error DB (Central):** `C:\Workflow\___111___Antigravity-Projekte\03_ERROR_DB.md`
 - **RB Protocols:** `docs/_rb/`
-- **HIVE Scripts:** `E:\_____1111____Projekte-Programmierung\Antigravity\__RB-Protokoll\scripts\`
+- **HIVE Scripts:** `C:\Workflow\___111___Antigravity-Projekte\_rb-Protokoll\scripts\`
 
 ---
 
@@ -63,27 +60,28 @@ ___EVERLAST_AI_TASK/
 
 ```powershell
 # RB Framework Check
-python "E:\_____1111____Projekte-Programmierung\Antigravity\__RB-Protokoll\scripts\rb.py" check
+python "C:\Workflow\___111___Antigravity-Projekte\_rb-Protokoll\scripts\rb.py" check
 
 # Pre-Commit Police (vor jedem Commit!)
-python "E:\_____1111____Projekte-Programmierung\Antigravity\__RB-Protokoll\scripts\pre_commit_police.py"
+python "C:\Workflow\___111___Antigravity-Projekte\_rb-Protokoll\scripts\pre_commit_police.py"
 ```
 
 ---
 
-## Open Questions
+## Goals (MVP)
 
-1. **Format:** Online-Event? Vor-Ort? Hybrid?
-2. **Zielgruppe:** Junior Devs? Seniors? Mixed?
-3. **Dauer:** Stunden? Tage? Wochen?
-4. **Monetarisierung:** Kostenlos? Ticketverkauf? Sponsoren?
-5. **Plattform:** Eigene Website? Discord? CLI-basiert?
+1.  [ ] Global Hotkey zur App-Aktivierung.
+2.  [ ] Native Voice Recording UI.
+3.  [ ] Schnelle Transkription via API.
+4.  [ ] Intelligentes Enrichment (Zusammenfassung/Formatierung).
+5.  [ ] Export/Copy-to-Clipboard Funktionalität.
+6.  [ ] High-End Design (Aesthetics Rule).
 
 ---
 
 ## Next Steps
 
-- [ ] Konzept weiter ausarbeiten
-- [ ] Tech Stack festlegen
-- [ ] MVP definieren
-- [ ] README.md erstellen
+- [ ] Next.js & Tauri Projekt initialisieren.
+- [ ] Implementierung des Voice Pipelines.
+- [ ] Integration der KI-Services.
+- [ ] Finales Polishing & UX-Design.
