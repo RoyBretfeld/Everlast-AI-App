@@ -51,9 +51,9 @@ ___EVERLAST_AI_TASK/
 
 ## Important Paths
 
-- **Error DB (Central):** `C:\Workflow\___111___Antigravity-Projekte\03_ERROR_DB.md`
+- **Error DB (Central):** `E:\_____1111____Projekte-Programmierung\Antigravity\03_ERROR_DB.md`
 - **RB Protocols:** `docs/_rb/`
-- **HIVE Scripts:** `C:\Workflow\___111___Antigravity-Projekte\_rb-Protokoll\scripts\`
+- **HIVE Scripts:** `E:\_____1111____Projekte-Programmierung\Antigravity\__RB-Protokoll\scripts\`
 
 ---
 
@@ -61,10 +61,10 @@ ___EVERLAST_AI_TASK/
 
 ```powershell
 # RB Framework Check
-python "C:\Workflow\___111___Antigravity-Projekte\_rb-Protokoll\scripts\rb.py" check
+python "E:\_____1111____Projekte-Programmierung\Antigravity\__RB-Protokoll\scripts\rb.py" check
 
 # Pre-Commit Police (vor jedem Commit!)
-python "C:\Workflow\___111___Antigravity-Projekte\_rb-Protokoll\scripts\pre_commit_police.py"
+python "E:\_____1111____Projekte-Programmierung\Antigravity\__RB-Protokoll\scripts\pre_commit_police.py"
 ```
 
 ---

@@ -1,73 +1,82 @@
-const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron');
 const path = require('path');
+
+let app, BrowserWindow, globalShortcut, ipcMain;
+
+try {
+  const electronModule = require('electron');
+  if (electronModule && typeof electronModule === 'object' && electronModule.app) {
+    ({ app, BrowserWindow, globalShortcut, ipcMain } = electronModule);
+  }
+} catch (e) {
+  console.log('Electron error:', e.message);
+}
+
+if (!app) {
+  console.error('Electron not available');
+  process.exit(1);
+}
 
 let mainWindow;
 
-function createWindow() {
-    mainWindow = new BrowserWindow({
-        width: 600,
-        height: 400,
-        frame: false,
-        transparent: true,
-        alwaysOnTop: true,
-        skipTaskbar: true,
-        webPreferences: {
-            nodeIntegration: false,
-            contextIsolation: true,
-            preload: path.join(__dirname, 'preload.js'),
-        },
-    });
+const createWindow = () => {
+  mainWindow = new BrowserWindow({
+    width: 900,
+    height: 700,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    show: true,  // Fenster sofort anzeigen
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js'),
+    },
+  });
 
-    // In development, load from Next.js dev server
-    const startUrl = process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
-        : `file://${path.join(__dirname, '.next/server/app/index.html')}`;
+  mainWindow.show();
 
-    mainWindow.loadURL(startUrl);
+  // Versuche zu laden
+  mainWindow.loadURL('http://localhost:3000')
+    .catch(() => mainWindow.loadURL('http://localhost:3001'))
+    .catch(() => mainWindow.loadURL('about:blank'));
 
-    // Default behavior: hidden, shown on hotkey
-    mainWindow.hide();
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+};
 
-    mainWindow.on('closed', () => {
-        mainWindow = null;
-    });
-}
+app.on('ready', () => {
+  createWindow();
 
-app.whenReady().then(() => {
-    createWindow();
-
-    // Register Global Hotkey (Alt+Shift+E as a placeholder)
-    const ret = globalShortcut.register('Alt+Shift+E', () => {
-        if (mainWindow) {
-            if (mainWindow.isVisible()) {
-                mainWindow.hide();
-            } else {
-                mainWindow.show();
-                mainWindow.focus();
-                // Notify frontend to start/stop session
-                mainWindow.webContents.send('hotkey-triggered');
-            }
-        }
-    });
-
-    if (!ret) {
-        console.log('registration failed');
+  // Registriere die Hotkey - startet nur die Aufnahme
+  const ret = globalShortcut.register('Ctrl+Alt+E', () => {
+    console.log('Hotkey triggered: Ctrl+Alt+E - Starting recording');
+    if (mainWindow) {
+      mainWindow.webContents.send('hotkey-triggered');
     }
+  });
 
-    app.on('activate', function () {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow();
-    });
+  // Überprüfe, ob die Hotkey erfolgreich registriert wurde
+  if (ret) {
+    console.log('✓ Hotkey Ctrl+Alt+E erfolgreich registriert');
+  } else {
+    console.error('✗ Fehler beim Registrieren der Hotkey Ctrl+Alt+E');
+    console.log('Die Hotkey könnte bereits von einer anderen Anwendung verwendet werden.');
+  }
 });
 
-app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit();
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit();
+});
+
+app.on('activate', () => {
+  if (!mainWindow) createWindow();
 });
 
 app.on('will-quit', () => {
-    globalShortcut.unregisterAll();
+  globalShortcut.unregisterAll();
 });
 
-// IPC communication
 ipcMain.on('minimize-app', () => {
-    mainWindow.hide();
+  if (mainWindow) mainWindow.hide();
 });

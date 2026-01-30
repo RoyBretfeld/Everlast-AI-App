@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Groq from 'groq-sdk';
-import { writeFile, readFile, mkdir } from 'fs/promises';
+import { writeFile, readFile, mkdir, unlink } from 'fs/promises';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { existsSync } from 'fs';
@@ -18,7 +18,35 @@ interface HistoryEntry {
     deleted: boolean;
 }
 
+// §4 Menschliche Hoheit: User-Konfiguration
+interface Config {
+    model: string;
+    systemPrompt: string;
+    language: string;
+    version: string;
+}
+
 const HISTORY_PATH = join(process.cwd(), 'data', 'history.json');
+const CONFIG_PATH = join(process.cwd(), 'data', 'config.json');
+
+const DEFAULT_CONFIG: Config = {
+    model: 'llama-3.3-70b-versatile',
+    systemPrompt: 'Du bist ein intelligenter Assistent, der gesprochenen Text in klare, strukturierte Notizen umwandelt. Formatiere die Ausgabe übersichtlich mit Aufzählungen oder Absätzen, wo sinnvoll. Korrigiere grammatikalische Fehler und füge fehlende Satzzeichen hinzu. Behalte den Kern der Aussage bei, verbessere aber Klarheit und Lesbarkeit.',
+    language: 'de',
+    version: '1.0.0'
+};
+
+async function loadConfig(): Promise<Config> {
+    try {
+        if (!existsSync(CONFIG_PATH)) {
+            return DEFAULT_CONFIG;
+        }
+        const data = await readFile(CONFIG_PATH, 'utf-8');
+        return JSON.parse(data);
+    } catch {
+        return DEFAULT_CONFIG;
+    }
+}
 
 async function loadHistory(): Promise<HistoryEntry[]> {
     try {
@@ -56,6 +84,7 @@ async function saveToHistory(transcript: string, enriched: string): Promise<stri
 }
 
 export async function POST(req: NextRequest) {
+    let tempPath = '';
     try {
         const formData = await req.formData();
         const file = formData.get('file') as Blob;
@@ -66,7 +95,7 @@ export async function POST(req: NextRequest) {
 
         // Convert Blob to File for Groq SDK
         const buffer = Buffer.from(await file.arrayBuffer());
-        const tempPath = join(tmpdir(), `upload_${Date.now()}.webm`);
+        tempPath = join(tmpdir(), `upload_${Date.now()}.webm`);
         await writeFile(tempPath, buffer);
 
         // 1. Transcription via Groq Whisper
@@ -76,33 +105,43 @@ export async function POST(req: NextRequest) {
             response_format: 'text',
         });
 
+        // §4 Menschliche Hoheit: Load user config
+        const config = await loadConfig();
+
         // 2. Enrichment via Groq Llama 3
         const chatCompletion = await groq.chat.completions.create({
             messages: [
                 {
                     role: 'system',
-                    content: 'You are an intelligent assistant. Enrich the following transcription. Format it as a structured note, summary, or action list dependending on the content. Be concise and professional.',
+                    content: config.systemPrompt,
                 },
                 {
                     role: 'user',
-                    content: transcription as string,
+                    content: transcription as unknown as string,
                 },
             ],
-            model: 'llama3-8b-8192',
+            model: config.model,
         });
 
         const enriched = chatCompletion.choices[0]?.message?.content || '';
 
         // §2 Revidierbarkeit: Log to history (Soft-Delete ready)
-        const historyId = await saveToHistory(transcription as string, enriched);
+        const historyId = await saveToHistory(transcription as unknown as string, enriched);
 
         return NextResponse.json({
             id: historyId,
             transcript: transcription,
             enriched: enriched,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('API Error:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        return NextResponse.json({ error: errorMessage }, { status: 500 });
+    } finally {
+        if (tempPath) {
+            try {
+                await unlink(tempPath);
+            } catch { }
+        }
     }
 }
