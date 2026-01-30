@@ -1,4 +1,4 @@
-# 🔮 EVERLAST - Voice Intelligence
+# 🔮 EVERLAST - Voice Intelligence App
 
 Everlast is a premium desktop application that transforms spoken words into structured, actionable intelligence. Designed for high-performance workflows, it leverages Groq's low-latency AI to provide near-instant transcription and enrichment.
 
