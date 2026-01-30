@@ -3,6 +3,7 @@
 > 🚧 **Status:** Planning Phase  
 > 📅 **Aktualisiert:** 2026-01-30  
 > 🎯 **Konzept:** Voice Intelligence Desktop App (Everlast)
+> 🐙 **Repo:** [github.com/RoyBretfeld/Everlast-AI-App](https://github.com/RoyBretfeld/Everlast-AI-App.git)
 
 ---
 
