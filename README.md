@@ -4,11 +4,27 @@ Everlast is a premium desktop application that transforms spoken words into stru
 
 ---
 
-## ⚠️ API-Key Hinweis
+## 🔑 Getting Your Own API Key
 
-> **Der für die Bewertung hinterlegte API-Key ist ein temporärer Entwickler-Key.**
-> Er ist aus Sicherheitsgründen auf eine **Gültigkeitsdauer von 14 Tagen** (bis zum **13. Februar 2026**) limitiert.
-> Danach muss ein eigener [Groq-API-Key](https://console.groq.com/) in der `.env`-Datei hinterlegt werden.
+EVERLAST requires a **Groq API Key** for transcription and AI enrichment. The key is **free** and takes 2 minutes to set up:
+
+### Step 1: Get Your Groq API Key
+1. Visit [console.groq.com](https://console.groq.com/keys)
+2. Sign up (free account)
+3. Create a new API key
+4. Copy the key
+
+### Step 2: Add to Your Local `.env`
+Create a `.env` file in the project root:
+```env
+GROQ_API_KEY=gsk_your_key_here
+```
+
+**⚠️ IMPORTANT:**
+- `.env` is **never committed** to the repository (protected by `.gitignore`)
+- Each developer/tester must get their own free API key
+- The key is stored locally on your machine only
+- See `.env.example` for the template
 
 ---
 
@@ -61,29 +77,49 @@ The app automatically detects its runtime environment and displays a visual indi
 All core features (Recording, Transcription, Enrichment, History, Settings) work identically in both modes via unified Next.js API routes.
 
 ## 🛠️ Setup & Installation
-1.  **Clone the Repo**:
-    ```bash
-    git clone <repo-url>
-    cd EVERLAST_AI
-    ```
-2.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
-3.  **Environment Variables**:
-    Create a `.env` file in the root:
-    ```env
-    GROQ_API_KEY=your_groq_api_key_here
-    ```
-4.  **Run Development Mode**:
-    ```bash
-    npm run dev
-    ```
-    *This starts the Next.js server and the Electron shell simultaneously.*
 
-## ⌨️ Shortcuts
-- `Alt+Shift+E`: Toggle Recording (Electron Mode only)
-- `Click Mic`: Toggle Recording (Browser/Electron)
+### Prerequisites
+- Node.js 18+ installed
+- A free Groq API Key (see "Getting Your Own API Key" above)
+
+### Installation Steps
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/RoyBretfeld/Everlast-AI-App.git
+   cd Everlast-AI-App
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Configure Your API Key**:
+   Copy `.env.example` to `.env` and add your Groq API key:
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your Groq API key
+   ```
+
+4. **Start the Application**:
+   ```bash
+   npm run dev
+   ```
+   This starts:
+   - Next.js dev server on `http://localhost:3000`
+   - Electron shell (desktop app)
+
+5. **Use the App**:
+   - **Desktop Mode**: Press `Ctrl+Alt+E` to start recording
+   - **Browser Mode** (fallback): Click the mic icon at `http://localhost:3000`
+
+## ⌨️ Keyboard Shortcuts
+| Action | Shortcut | Mode |
+|--------|----------|------|
+| **Start/Stop Recording** | `Ctrl+Alt+E` | Desktop (Electron) only |
+| **Click Recording Button** | Mouse click | Desktop + Browser |
+| **Copy Result** | Button click | Both modes |
+| **Exit Application** | Button click | Both modes |
 
 ---
 
@@ -104,27 +140,54 @@ Dieses Projekt wurde unter strikter Einhaltung des **RB-Protokolls v3.0** entwic
 
 ## 🔧 Troubleshooting
 
-### Electron Binary-Cache Problem (Windows)
-
-Falls Electron nicht startet (`app: undefined`), liegt möglicherweise ein Cache-Konflikt vor:
-
-```powershell
-# 1. Electron-Cache löschen
-Remove-Item -Recurse -Force "$env:LOCALAPPDATA\electron"
-
-# 2. Node modules neu installieren
-Remove-Item -Recurse -Force node_modules
-npm install
-
-# 3. Alternativ: Fix-Script ausführen
-powershell -ExecutionPolicy Bypass -File scripts/clean_electron.ps1
+### "GROQ_API_KEY not found" Error
+**Solution**: Make sure your `.env` file exists in the project root with a valid Groq API key:
+```bash
+ls -la .env  # Check if file exists
+cat .env     # Verify the key is there
 ```
 
-### Browser-Modus (Fallback)
+### Electron Won't Start
+**Solution**: Try the Browser Mode fallback:
+```bash
+# Stop the current process (Ctrl+C)
+# Then open: http://localhost:3000 in your browser
+```
 
-Die App funktioniert auch ohne Electron im Browser unter `http://localhost:3000`. Nur der globale Hotkey ist dann nicht verfügbar.
+The app works fine without Electron! You just won't have the `Ctrl+Alt+E` global hotkey.
+
+### Microphone Permission Denied
+**Solution**:
+- Windows: Check app permissions in Settings > Privacy & Security > Microphone
+- macOS: Grant microphone access when prompted
+- Linux: Check ALSA/PulseAudio permissions
+
+### Browser Mode Only (No Electron)
+That's fine! The app has a **hybrid runtime model**:
+- All core features work in browser mode
+- Only the global hotkey (`Ctrl+Alt+E`) requires Electron
+- Just click the mic button to start recording
 
 ---
 
-*Created as part of the Everlast AI Challenge.*
+---
+
+## 📊 Project Status
+- ✅ MVP Complete: Hotkey + Recording + Transcription + Enrichment + History + Clean Exit
+- ✅ Security: API keys removed, `.env` protected
+- ✅ Deployment Ready: Build passes, remote synced
+
+## 🤝 Contributing
+1. Get your own Groq API key (see setup above)
+2. Create a `.env` file locally (never commit it)
+3. Make your changes
+4. Test in both Desktop and Browser modes
+5. Submit PR
+
+## 📝 License
+MIT License - See LICENSE file for details
+
+---
+
+*Created as part of the EVERLAST AI Project.*
 *Powered by Groq AI & the RB-Protocol v3.0*
